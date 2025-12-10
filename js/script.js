@@ -85,24 +85,14 @@ document.addEventListener('DOMContentLoaded', function() {
     // Form submission
     const contactForm = document.getElementById('contactForm');
     if (contactForm) {
-        contactForm.addEventListener('submit', async function(e) {
+        contactForm.addEventListener('submit', function(e) {
             e.preventDefault();
             
-            // Get form elements
-            const nameInput = document.getElementById('name');
-            const emailInput = document.getElementById('email');
-            const subjectInput = document.getElementById('subject');
-            const messageInput = document.getElementById('message');
-            const submitButton = this.querySelector('button[type="submit"]');
-            
-            // Get form values
-            const name = nameInput.value.trim();
-            const email = emailInput.value.trim();
-            const subject = subjectInput.value.trim();
-            const message = messageInput.value.trim();
-            
-            // Save original button text
-            const originalButtonText = submitButton.innerHTML;
+            // Get form data
+            const name = document.getElementById('name').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const subject = document.getElementById('subject').value.trim();
+            const message = document.getElementById('message').value.trim();
             
             // Validate form
             if (!name || !email || !subject || !message) {
@@ -117,36 +107,18 @@ document.addEventListener('DOMContentLoaded', function() {
                 return;
             }
             
-            try {
-                // Update button to show loading state
-                submitButton.disabled = true;
-                submitButton.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Sending...';
-                
-                // Send the request to the serverless function
-                const response = await fetch('/api/send-email', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ name, email, subject, message })
-                });
-                
-                const result = await response.json();
-                
-                if (result.success) {
-                    alert('Message sent successfully! You can view it here: ' + result.previewUrl);
-                    this.reset();
-                } else {
-                    throw new Error(result.message || 'Failed to send message');
-                }
-            } catch (error) {
-                console.error('Error:', error);
-                alert(error.message || 'An error occurred while sending your message. Please try again later.');
-            } finally {
-                // Restore button state
-                submitButton.disabled = false;
-                submitButton.innerHTML = originalButtonText;
-            }
+            // Format the email body with proper line breaks
+            const emailBody = `Name: ${name}%0D%0AEmail: ${email}%0D%0A%0D%0A${message.replace(/\n/g, '%0D%0A')}`;
+            
+            // Create the mailto link
+            const mailtoLink = `mailto:a.haleem@haleem-consult.com?subject=${encodeURIComponent(subject)}&body=${emailBody}`;
+            
+            // Open the default email client
+            window.location.href = mailtoLink;
+            
+            // Show success message and reset form
+            alert('Your email client will open with your message. Please click send to complete your message.');
+            this.reset();
         });
     }
     
