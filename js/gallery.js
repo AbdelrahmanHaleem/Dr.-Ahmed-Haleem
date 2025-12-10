@@ -4,6 +4,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const galleryItems = document.querySelectorAll('.gallery-item');
     const lightbox = document.getElementById('lightbox');
     const lightboxImg = document.getElementById('lightbox-img');
+    const body = document.body;
     
     // Store all gallery images
     let currentImageIndex = 0;
@@ -12,17 +13,17 @@ document.addEventListener('DOMContentLoaded', function() {
     // Initialize gallery data
     galleryItems.forEach((item, index) => {
         const img = item.querySelector('img');
-        images.push(img.src);
-        
-        // Update click handler to use index
-        item.onclick = function(e) {
-            e.stopPropagation();
-            currentImageIndex = index;
-            updateLightbox();
-            lightbox.classList.add('show');
-            document.body.style.overflow = 'hidden'; // Prevent scrolling when lightbox is open
-            document.documentElement.style.overflow = 'hidden'; // For older browsers
-        };
+        if (img && img.src) {
+            images.push(img.src);
+            
+            // Update click handler to use index
+            item.onclick = function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                currentImageIndex = index;
+                openLightbox(img.src);
+            };
+        }
     });
     
     // Update lightbox with current image
@@ -37,6 +38,13 @@ document.addEventListener('DOMContentLoaded', function() {
             currentImageIndex = index;
             updateLightbox();
             lightbox.classList.add('show');
+            body.classList.add('lightbox-open');
+            
+            // Hide navbar when lightbox is open
+            const navbar = document.querySelector('.navbar');
+            if (navbar) navbar.style.display = 'none';
+            
+            // Prevent body scroll
             document.body.style.overflow = 'hidden';
             document.documentElement.style.overflow = 'hidden';
         }
@@ -45,6 +53,13 @@ document.addEventListener('DOMContentLoaded', function() {
     // Close lightbox
     window.closeLightbox = function() {
         lightbox.classList.remove('show');
+        body.classList.remove('lightbox-open');
+        
+        // Show navbar when closing lightbox
+        const navbar = document.querySelector('.navbar');
+        if (navbar) navbar.style.display = 'block';
+        
+        // Re-enable body scroll
         document.body.style.overflow = '';
         document.documentElement.style.overflow = '';
     };
@@ -61,7 +76,22 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         
         updateLightbox();
+        return false; // Prevent default action
     };
+    
+    // Close lightbox when clicking outside the image
+    lightbox.addEventListener('click', function(e) {
+        if (e.target === lightbox) {
+            closeLightbox();
+        }
+    });
+    
+    // Close with Escape key
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            closeLightbox();
+        }
+    });
     
     // Close when clicking outside the image
     lightbox.addEventListener('click', function(e) {

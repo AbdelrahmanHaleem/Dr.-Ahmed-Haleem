@@ -17,8 +17,8 @@
             <div class="nav-links">
                 <a href="#home" data-i18n="nav.home">Home</a>
                 <a href="#about" data-i18n="nav.about">About</a>
-                <a href="#consulting" data-i18n="nav.consulting">Consulting</a>
                 <a href="#academia" data-i18n="nav.academia">Academia</a>
+                <a href="#consulting" data-i18n="nav.consulting">Consulting</a>
                 <a href="#international" data-i18n="nav.international">International Role</a>
                 <a href="#media" data-i18n="nav.media">Media</a>
                 <a href="#contact" data-i18n="nav.contact">Contact</a>
@@ -78,7 +78,7 @@
                         <p>Today, his journey represents a rare balance of academic excellence, consulting expertise, and international influence. From classrooms and lecture halls to high-profile national projects and global cultural initiatives, Professor Haleem continues to make a profound impact on both the academic community and the architectural profession.</p>
                     </div>
                     
-                    <div class="academic-section">
+                    <div id="academia" class="academic-section">
                         <h3>Academic Contributions</h3>
                         
                         <p>Throughout his academic career, Professor Ahmed Haleem has established himself as a leading authority in sustainable architecture, urban regeneration, and architectural education. With more than two decades of teaching and research experience, he has successfully integrated academic knowledge with applied practice, shaping the future of architectural education in Egypt.</p>
@@ -397,12 +397,6 @@
                 </div>
             </div>
             
-            <div class="cta-section text-center">
-                <div class="cta-content">
-                    <h3>Interested in international collaboration or learning more about our initiatives?</h3>
-                    <a href="#contact" class="btn btn-primary">Get in Touch</a>
-                </div>
-            </div>
             </div>
         </div>
     </section>
@@ -505,7 +499,7 @@
             <h2 class="section-title">Get In Touch</h2>
             <div class="contact-content">
                 <div class="contact-form">
-                    <form id="contactForm">
+                    <form id="contactForm" method="POST">
                         <div class="form-group">
                             <input type="text" id="name" name="name" data-i18n-placeholder="contact.name" placeholder="Your Name" required>
                         </div>
@@ -518,7 +512,9 @@
                         <div class="form-group">
                             <textarea id="message" name="message" data-i18n-placeholder="contact.message" placeholder="Your Message" rows="5" required></textarea>
                         </div>
-                        <button type="submit" class="btn btn-primary" data-i18n="contact.send">Send Message</button>
+                        <button type="submit" class="btn btn-primary" data-i18n="contact.send">
+                            <span class="button-text">Send Message</span>
+                        </button>
                     </form>
                 </div>
                 <div class="contact-info">
@@ -526,25 +522,18 @@
                         <i class="fas fa-envelope"></i>
                         <div>
                             <h4>Email</h4>
-                            <p>ahmed.haleem.hussein@gmail.com</p>
+                            <p><a href="mailto:a.haleem@haleem-consult.com" class="contact-link">a.haleem@haleem-consult.com</a></p>
                         </div>
                     </div>
                     <div class="info-item">
                         <i class="fas fa-phone"></i>
                         <div>
                             <h4>Phone</h4>
-                            <p>+20 12 01 222 907</p>
-                        </div>
-                    </div>
-                    <div class="info-item">
-                        <i class="fas fa-map-marker-alt"></i>
-                        <div>
-                            <h4>Address</h4>
-                            <p>6 Gamal El-Deen Afify St.,<br>From Ahmed Fakhry St.<br>Nasr City, Cairo, Egypt</p>
+                            <p><a href="tel:+201201222907" class="contact-link">+20 12 01 222 907</a></p>
                         </div>
                     </div>
                     <div class="social-links">
-                        <a href="#" target="_blank" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
+                        <a href="https://www.linkedin.com/in/ahmed-haleem-hussein" target="_blank" aria-label="LinkedIn" rel="noopener noreferrer"><i class="fab fa-linkedin"></i></a>
                         <a href="#" target="_blank" aria-label="ResearchGate"><i class="fab fa-researchgate"></i></a>
                         <a href="#" target="_blank" aria-label="Google Scholar"><i class="fas fa-graduation-cap"></i></a>
                         <a href="#" target="_blank" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
@@ -575,13 +564,6 @@
                         <li><a href="#contact">Contact</a></li>
                     </ul>
                 </div>
-                <div class="footer-newsletter">
-                    <h4 data-i18n="footer.newsletter">Subscribe to Newsletter</h4>
-                    <form class="newsletter-form">
-                        <input type="email" data-i18n-placeholder="contact.email" placeholder="Your Email">
-                        <button type="submit" data-i18n="footer.subscribe">Subscribe</button>
-                    </form>
-                </div>
             </div>
             <div class="footer-bottom">
                 <p data-i18n="footer.copyright">&copy; 2024 Dr. Ahmed Haleem. All Rights Reserved.</p>
@@ -594,8 +576,16 @@
         </div>
     </footer>
 
+    <!-- Lightbox HTML -->
+    <div id="lightbox" class="lightbox">
+        <span class="close-btn" onclick="closeLightbox()">&times;</span>
+        <img id="lightbox-img" class="lightbox-content" src="" alt="Lightbox Image">
+        <a class="prev" onclick="changeImage(-1)">&#10094;</a>
+        <a class="next" onclick="changeImage(1)">&#10095;</a>
+    </div>
+
     <script src="js/script.js"></script>
-    <script src="js/gallery.js"></script>
     <script src="js/navbar.js"></script>
+    <script src="js/gallery.js"></script>
 </body>
 </html>

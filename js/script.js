@@ -85,22 +85,79 @@ document.addEventListener('DOMContentLoaded', function() {
     // Form submission
     const contactForm = document.getElementById('contactForm');
     if (contactForm) {
-        contactForm.addEventListener('submit', function(e) {
+        contactForm.addEventListener('submit', async function(e) {
             e.preventDefault();
             
-            // Get form data
-            const formData = new FormData(this);
-            const formObject = {};
-            formData.forEach((value, key) => {
-                formObject[key] = value;
-            });
+            // Get form elements
+            const nameInput = document.getElementById('name');
+            const emailInput = document.getElementById('email');
+            const subjectInput = document.getElementById('subject');
+            const messageInput = document.getElementById('message');
+            const submitButton = this.querySelector('button[type="submit"]');
             
-            // Here you would typically send the form data to a server
-            console.log('Form submitted:', formObject);
+            // Get form values
+            const name = nameInput.value.trim();
+            const email = emailInput.value.trim();
+            const subject = subjectInput.value.trim();
+            const message = messageInput.value.trim();
             
-            // Show success message
-            alert('Thank you for your message. We will get back to you soon!');
-            this.reset();
+            // Save original button text
+            const originalButtonText = submitButton.innerHTML;
+            
+            // Validate form
+            if (!name || !email || !subject || !message) {
+                alert('Please fill in all required fields.');
+                return;
+            }
+            
+            // Validate email format
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                alert('Please enter a valid email address.');
+                return;
+            }
+            
+            try {
+                // Update button to show loading state
+                submitButton.disabled = true;
+                submitButton.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Sending...';
+                
+                // Prepare form data
+                const formData = {
+                    name: name,
+                    email: email,
+                    subject: subject,
+                    message: message
+                };
+                
+                // Send the request to the server
+                const response = await fetch('send_email.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(formData)
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    // Show success message
+                    alert(result.message);
+                    // Reset the form
+                    this.reset();
+                } else {
+                    // Show error message
+                    alert(result.message || 'Failed to send message. Please try again.');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('An error occurred while sending your message. Please try again later.');
+            } finally {
+                // Restore button state
+                submitButton.disabled = false;
+                submitButton.innerHTML = originalButtonText;
+            }
         });
     }
     

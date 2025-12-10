@@ -393,31 +393,28 @@ section {
     position: fixed;
     top: 0;
     left: 0;
-    width: 100vw;
-    height: 100vh;
+    width: 100%;
+    height: 100%;
     background-color: rgba(0, 0, 0, 0.95);
-    z-index: 9999; /* Higher than any other element */
-    opacity: 0;
-    transition: opacity 0.3s ease;
+    z-index: 9999; /* Higher z-index to ensure it's on top of everything */
     justify-content: center;
     align-items: center;
-    overflow: hidden;
-    -webkit-backdrop-filter: blur(5px);
-    backdrop-filter: blur(5px);
-    padding: 0;
-    margin: 0;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    cursor: pointer;
 }
 
 .lightbox.show {
     display: flex;
     opacity: 1;
+    animation: fadeIn 0.3s ease;
 }
 
 .lightbox-content {
     max-width: 90%;
     max-height: 90vh;
     object-fit: contain;
-    animation: fadeIn 0.3s ease;
+    animation: zoomIn 0.3s ease;
 }
 
 .close-btn {
@@ -468,8 +465,13 @@ section {
 }
 
 @keyframes fadeIn {
-    from { opacity: 0; transform: scale(0.95); }
-    to { opacity: 1; transform: scale(1); }
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes zoomIn {
+    from { transform: scale(0.9); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
 }
 
 /* Responsive adjustments for gallery */
@@ -489,6 +491,19 @@ section {
         right: 15px;
         font-size: 30px;
     }
+}
+
+/* Ensure navbar is below lightbox */
+.navbar {
+    position: relative;
+    z-index: 100; /* Lower than lightbox */
+    transition: opacity 0.3s ease;
+}
+
+/* Hide scrollbar when lightbox is open */
+body.lightbox-open {
+    overflow: hidden;
+    height: 100%;
 }
 
 /* ====================
@@ -2836,6 +2851,35 @@ img {
     background-color: var(--primary-color);
     color: var(--white);
     transform: translateY(-3px);
+}
+
+/* Contact Links */
+.contact-link {
+    color: var(--primary-color);
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.3s ease;
+    display: inline-block;
+    position: relative;
+}
+
+.contact-link::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 0;
+    height: 1px;
+    background-color: var(--secondary-color);
+    transition: width 0.3s ease;
+}
+
+.contact-link:hover {
+    color: var(--secondary-color);
+}
+
+.contact-link:hover::after {
+    width: 100%;
 }
 
 .download-cv {
