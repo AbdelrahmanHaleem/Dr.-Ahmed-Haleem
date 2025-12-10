@@ -122,37 +122,26 @@ document.addEventListener('DOMContentLoaded', function() {
                 submitButton.disabled = true;
                 submitButton.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Sending...';
                 
-                // Prepare form data
-                const formData = {
-                    name: name,
-                    email: email,
-                    subject: subject,
-                    message: message
-                };
-                
-                // Send the request to the server
-                const response = await fetch('send_email.php', {
+                // Send the request to the serverless function
+                const response = await fetch('/api/send-email', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify(formData)
+                    body: JSON.stringify({ name, email, subject, message })
                 });
                 
                 const result = await response.json();
                 
                 if (result.success) {
-                    // Show success message
-                    alert(result.message);
-                    // Reset the form
+                    alert('Message sent successfully! You can view it here: ' + result.previewUrl);
                     this.reset();
                 } else {
-                    // Show error message
-                    alert(result.message || 'Failed to send message. Please try again.');
+                    throw new Error(result.message || 'Failed to send message');
                 }
             } catch (error) {
                 console.error('Error:', error);
-                alert('An error occurred while sending your message. Please try again later.');
+                alert(error.message || 'An error occurred while sending your message. Please try again later.');
             } finally {
                 // Restore button state
                 submitButton.disabled = false;
