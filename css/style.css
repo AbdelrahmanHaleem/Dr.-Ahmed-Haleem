@@ -263,6 +263,15 @@ section {
     padding: 5px 0;
 }
 
+.nav-links a {
+    color: var(--primary-color);
+    text-decoration: none;
+    font-weight: 500;
+    position: relative;
+    padding: 5px 0;
+    transition: color 0.3s ease;
+}
+
 .nav-links a::after {
     content: '';
     position: absolute;
@@ -274,13 +283,16 @@ section {
     transition: width 0.3s ease;
 }
 
-.nav-links a:hover::after,
-.nav-links a.active::after {
-    width: 100%;
+.nav-links a:hover,
+.nav-links a:focus,
+.nav-links a.active {
+    color: var(--secondary-color);
 }
 
-.nav-links a:hover {
-    color: var(--secondary-color);
+.nav-links a:hover::after,
+.nav-links a:focus::after,
+.nav-links a.active::after {
+    width: 100%;
 }
 
 /* Mobile menu styles */
